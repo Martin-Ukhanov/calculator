@@ -1,0 +1,33 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    row-gap: 10px;
+}
+
+.output {
+    height: 100px;
+    border: 2px solid black;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 40px;
+}
+
+.input {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.input .row {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    column-gap: 10px;
+}
+
+.input button {
+    flex: 1;
+    font-size: 40px;
+}
