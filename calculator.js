@@ -62,7 +62,7 @@ function operate(operator, a, b) {
 }
 
 function roundResult(n) {
-    return Math.round(n * 1000) / 1000
+    return Math.round(n * 1000) / 1000;
 }
 
 function appendNumber(n) {
