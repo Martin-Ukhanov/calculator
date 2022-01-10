@@ -39,6 +39,12 @@ function clear() {
     resetNumberScreen = false;
 }
 
+function error(s) {
+    numberScreen.textContent = 'ERROR';
+    alert(s);
+    clear();
+}
+
 function operate(operator, a, b) {
     a = Number(a);
     b = Number(b);
@@ -51,9 +57,7 @@ function operate(operator, a, b) {
             return a * b;
         case '÷':
             if (b === 0) {
-                numberScreen.textContent = 'ERROR';
-                alert('Cannot divide by zero.');
-                clear();
+                error('Cannot divide by zero.');
                 return '0';
             } else {
                 return a / b;
@@ -61,8 +65,8 @@ function operate(operator, a, b) {
     }
 }
 
-function roundResult(n) {
-    return Math.round(n * 1000) / 1000;
+function roundNumber(n) {
+    return Math.round(n * 100000000) / 100000000; // Round to eight decimals
 }
 
 function appendNumber(n) {
@@ -71,14 +75,16 @@ function appendNumber(n) {
         canEvaluate = true;
         resetNumberScreen = false;
     }
-    if (numberScreen.textContent === '0') {
-        if (n === '0') {
-            return;
-        } else {
-            numberScreen.textContent = '';
+    if (numberScreen.textContent.length < 8) {
+        if (numberScreen.textContent === '0') {
+            if (n === '0') {
+                return;
+            } else {
+                numberScreen.textContent = '';
+            }
         }
+        numberScreen.textContent += n;
     }
-    numberScreen.textContent += n;
 }
 
 function setOperator(operator) {
@@ -108,8 +114,13 @@ function evaluate() {
     if (canEvaluate) {
         secondOperand = numberScreen.textContent;
         operationScreen.textContent += ` ${secondOperand} =`;
-        numberScreen.textContent = roundResult(operate(currentOperator, firstOperand, secondOperand));
-        canEvaluate = false;
+        const answer = roundNumber(operate(currentOperator, firstOperand, secondOperand));
+        if (answer.toString().length > 8) {
+            error('Result too long.');
+        } else {
+            numberScreen.textContent = answer;
+            canEvaluate = false;
+        }
     }
 }
 
