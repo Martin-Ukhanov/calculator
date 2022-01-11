@@ -13,6 +13,8 @@ let currentOperator = '';
 let resetNumberScreen = false;
 let canEvaluate = false;
 
+window.addEventListener('keydown', keyboardInput);
+
 numberButtons.forEach((numberButton) => {
     numberButton.addEventListener('click', () => appendNumber(numberButton.textContent));
 });
@@ -30,9 +32,9 @@ deleteButton.addEventListener('click', deleteNumber);
 clearButton.addEventListener('click', clear);
 
 function clear() {
-    firstOperand = null;
-    secondOperand = null;
-    currentOperator = null;
+    firstOperand = '';
+    secondOperand = '';
+    currentOperator = '';
     numberScreen.textContent = '0';
     operationScreen.textContent = '';
     canEvaluate = false;
@@ -51,7 +53,7 @@ function operate(operator, a, b) {
     switch (operator) {
         case '+':
             return a + b;
-        case '-':
+        case '−':
             return a - b;
         case '×':
             return a * b;
@@ -130,4 +132,27 @@ function deleteNumber() {
     } else {
         numberScreen.textContent = '0';
     }
+}
+
+function convertOperator(operator) {
+    switch (operator) {
+        case '+':
+            return '+';
+        case '-':
+            return '−';
+        case '*':
+            return '×';
+        case '/':
+            return '÷';
+    }
+}
+
+function keyboardInput(e) {
+    let val = e.key;
+    if (val >= 0 && val <= 9) appendNumber(val);
+    else if (val === '.') appendDecimal();
+    else if (val === '=' || val === 'Enter') evaluate();
+    else if (val === 'Backspace') deleteNumber();
+    else if (val === 'Escape') clear();
+    else if (val === '+' || val === '-' || val === '*' || val === '/') setOperator(convertOperator(val));
 }
